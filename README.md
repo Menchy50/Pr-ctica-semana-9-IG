@@ -10,7 +10,7 @@ Este proyecto implementa una composición visual en **Three.js** utilizando `Sha
 
 ### 1. Fondo Dinámico a Pantalla Completa (`crearFondo` y `fragmentShaderFondo`)
 
-A la hora de crear el fondo, decidí hacer que cubra todo el espacio visible independientemente del zoom de la cámara. Para ello creé un plano de `2x2` y en el `vertexShaderFondo` asigné directamente `gl_Position = vec4(position.xy, 0.0, 1.0)`, ya que en WebGL las coordenadas normalizadas de pantalla (*Normalized Device Coordinates*) van desde `-1.0` hasta `1.0` en ambos ejes. Además, se desactivó `depthWrite` para que el fondo se mantenga siempre por detrás de los círculos.
+A la hora de crear el fondo, decidí hacer que cubra todo el espacio visible independientemente del zoom de la cámara. Para ello creé un plano de `2x2` y en el `vertexShaderFondo` asigné directamente `gl_Position = vec4(position.xy, 0.0, 1.0)`, ya que en WebGL las coordenadas normalizadas de pantalla van desde `-1.0` hasta `1.0` en ambos ejes. Además, se desactivó `depthWrite` para que el fondo se mantenga siempre por detrás de los círculos.
 
 ```javascript
 function crearFondo() {
@@ -26,7 +26,7 @@ function crearFondo() {
 }
 ```
 
-Para el aspecto visual del fondo me inspiré en el ruido 2D (*value noise* / estilo Perlin), partiendo del código base proporcionado y aplicando una paleta de colores vivos (azul, rosa, amarillo y cian). Con el vector `vec2 q` creamos dos capas de ruido que se desplazan en direcciones opuestas usando `u_time`, sumando `vec2(5.2, 1.3)` para desfasar ambos ejes y evitar que el patrón sea simétrico. Finalmente, al sumar `2.5 * q` y la posición del ratón (`u_mouse * 0.5`) dentro de `n`, distorsionamos las coordenadas logrando una sensación de movimiento líquido.
+Para el aspecto visual del fondo me inspiré en el ruido 2D (estilo Perlin), partiendo del código base proporcionado y aplicando una paleta de colores vivos (azul, rosa, amarillo y cian). Con el vector `vec2 q` creamos dos capas de ruido que se desplazan en direcciones opuestas usando `u_time`, sumando `vec2(5.2, 1.3)` para desfasar ambos ejes y evitar que el patrón sea simétrico. Finalmente, al sumar `2.5 * q` y la posición del ratón (`u_mouse * 0.5`) dentro de `n`, distorsionamos las coordenadas logrando una sensación de movimiento líquido.
 
 ```glsl
 void main() {
@@ -93,7 +93,7 @@ for (let anillo of anillos) {
 
 Para que cada círculo tuviera su propia textura fluida en su interior en lugar de depender de las coordenadas globales de la pantalla, utilizamos el `vertexShaderCirculo` para enviar la posición local de cada vértice (`vPos = position.xy`) al fragment shader.
 
-Dentro de `fragmentShaderCirculos`, escalamos `vPos * 2.2` para ajustar el tamaño de las manchas dentro de cada círculo y aplicamos la misma técnica de distorsión fluida con `vec2 q` y el desfase `vec2(3.1, 7.4)`. Finalmente, mapeamos el valor del ruido `n` mediante `smoothstep` y `mix` para combinar una paleta de tres colores vivos que contrastan con el fondo: **verde**, **naranja** y **blanco**.
+Dentro de `fragmentShaderCirculos`, escalamos `vPos * 2.2` para ajustar el tamaño de las manchas dentro de cada círculo y aplicamos la misma técnica de distorsión fluida con `vec2 q` y el desfase `vec2(3.1, 7.4)`. Finalmente, mapeamos el valor del ruido `n` mediante `smoothstep` y `mix` para combinar una paleta de tres colores vivos que contrastan con el fondo: **verde**, **naranja** y **blanco**. Algo parecido al fondo.
 
 ```glsl
 void main() {
@@ -141,3 +141,17 @@ uniformsCirculos.u_time.value += 0.03 * multiplicadorVelocidad;
 ```
 
 Por último, la escena incorpora `OrbitControls` para poder rotar y hacer zoom libremente con el ratón, junto con el evento `onWindowResize` que recalcula la relación de aspecto de la cámara, el tamaño del renderizador y el uniform `u_resolution` al cambiar el tamaño de la ventana.
+
+Resultado final
+
+
+Fuentes consultadas:
+
+Mapeo de valores escalares (0.0 a 1.0) a paletas de color mediante mix() y smoothstep():
+https://thebookofshaders.com/06/
+
+Técnica utilizada en fragmentShader_04 para que el ruido parezca tener un movimiento de fluido.
+https://iquilezles.org/articles/warp/
+
+Referencia para el paso de uniforms (u_time, u_resolution, u_mouse):
+https://threejs.org/docs/#api/en/materials/ShaderMaterial
