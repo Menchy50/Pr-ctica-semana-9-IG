@@ -142,8 +142,9 @@ uniformsCirculos.u_time.value += 0.03 * multiplicadorVelocidad;
 
 Por último, la escena incorpora `OrbitControls` para poder rotar y hacer zoom libremente con el ratón, junto con el evento `onWindowResize` que recalcula la relación de aspecto de la cámara, el tamaño del renderizador y el uniform `u_resolution` al cambiar el tamaño de la ventana.
 
-Resultado final
+### Resultado final:
 
+![Mapa mundial](src/shader.png)
 
 Fuentes consultadas:
 
