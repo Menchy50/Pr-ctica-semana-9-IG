@@ -142,11 +142,11 @@ uniformsCirculos.u_time.value += 0.03 * multiplicadorVelocidad;
 
 Por último, la escena incorpora `OrbitControls` para poder rotar y hacer zoom libremente con el ratón, junto con el evento `onWindowResize` que recalcula la relación de aspecto de la cámara, el tamaño del renderizador y el uniform `u_resolution` al cambiar el tamaño de la ventana.
 
-### Resultado final:
+### Resultado final
 
 ![shader](src/shader.png)
 
-## Fuentes consultadas:
+## Fuentes consultadas
 
 Mapeo de valores escalares (0.0 a 1.0) a paletas de color mediante mix() y smoothstep():
 https://thebookofshaders.com/06/
@@ -157,7 +157,7 @@ https://iquilezles.org/articles/warp/
 Referencia para el paso de uniforms (u_time, u_resolution, u_mouse):
 https://threejs.org/docs/#api/en/materials/ShaderMaterial
 
-## Uso de IA:
+## Uso de IA
 
 La IA se ha utilizado para poder hacer que el código sea más dinámico, en partes del código donde mi implementación funcionaba de manera errónea. También para implementar los colores y el movimiento de los círculos que se movieran dinámicamente dependiendo de donde está el ratón.
 Además también se utilizó para adaptar el código de shader a el editor del Book Of The Shaders y el tiny code.
