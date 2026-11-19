@@ -1,0 +1,3 @@
+#define V vec2
+#define F float
+precision mediump F;uniform V u_resolution,u_mouse;uniform F u_time;F n(V p){return dot(sin(p*2.+sin(p.yx*3.)),V(.25))+.5;}void main(){V r=u_resolution,u=(gl_FragCoord.xy-.5*r)/r.y*3.;F t=u_time*(.5+u_mouse.x/r.x),v=n(u+n(u+t));vec3 c=.5+.5*cos(v*vec3(2,1,3)+vec3(4,4,6));for(F a=0.;a<1.;a+=.34){F p=fract(t*.3+a),g=floor(atan(u.y,u.x)*1.91+.5)/1.91,k=1.-p,s=.27*k;V d=u-V(cos(g),sin(g))*2.55*k;if(length(d)<s)c=.5+.5*cos(vec3(n(d/s*2.+t)*2.+4.,1,2));}gl_FragColor=vec4(c,1);}
